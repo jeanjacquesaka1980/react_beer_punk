@@ -9,8 +9,7 @@ class Beers extends React.Component {
     isClicked: true
   };
 
-  handleClick = id => {
-    const { isClicked = this.state } = this.props;
+  handleClick = (id, isClicked) => {
     
     this.props.handleFavorite(id, isClicked);
 
@@ -20,8 +19,7 @@ class Beers extends React.Component {
   };
 
   render() {
-    const { id, src, title, abv, description } = this.props;
-    let isClicked = this.state.isClicked;
+    const { id, src, title, abv, description, isClicked = this.state.isClicked } = this.props;
 
     return (
       <div className="col-3">

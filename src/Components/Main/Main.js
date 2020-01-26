@@ -18,8 +18,8 @@ class Main extends React.Component {
     this.state = {
       displayBeers: "",
       searchInput: "",
-      favorited: ""
-      // isClicked: false
+      favorited: "",
+      isClicked: false
     };
     this.beers = [];
     this.newBeersList = [];
@@ -109,6 +109,11 @@ class Main extends React.Component {
           beersList.push(LIST_BEERS);
         });
 
+        /* 
+        TODO don't push is const BEERS directly but later. Reuse first this.beers
+        TODO because by pushing in BEERS it creating a new array of object that 
+        TODO result of false for the whol thing for the isFavorited
+        */
         const BEERS = [];
         beersList.map(el => {
           BEERS.push(
@@ -125,6 +130,8 @@ class Main extends React.Component {
           );
         });
 
+        console.log(BEERS)
+
         this.setState({
           displayBeers: BEERS
         });
@@ -136,30 +143,31 @@ class Main extends React.Component {
             }
           });
         });
-        this.beers = this.beers.concat(beersList);
-        console.log(beersList)
-        console.log(this.beers)
+        // this.beers = this.beers.concat(beersList);
+        this.beers = [...this.beers, ...beersList]
+        console.log(beersList);
+        console.log(this.beers);
       });
   };
 
   handleFavorite = (id, isClicked) => {
-    const { favoriteBeers =  isClicked } = this.props;
-
+    // console.log(isClicked)
     const FAVORITED_BEERS = [];
 
-    if (favoriteBeers){
-      console.log("ok")
-    }
-
     this.beers.forEach(el => {
-      if (el.id === id) {
-        !el.isfavorited ? (el.isfavorited = true) : (el.isfavorited = false);
+      if (el.id === id){
+        if (isClicked) el.isfavorited = true;
+        if (!isClicked) el.isfavorited = false
       }
+      // if (el.id === id) {
+      //   ()!el.isfavorited ? (el.isfavorited = true) : (el.isfavorited = false);
+      // }
     });
-    console.log(this.beers);
+    const beers = [...this.beers]
 
-    this.beers.forEach(el => {
+    beers.forEach(el => {
       if (el.isfavorited) {
+        console.log(beers)
         FAVORITED_BEERS.push(
           <Beers
             isfavorited={el.isfavorited}
@@ -173,7 +181,22 @@ class Main extends React.Component {
           />
         );
       }
-    });
+    })
+
+    /* 
+    TODO WORK ON THIS LINE UNDER 
+    */
+    if (!isClicked) {
+      console.log("ok");
+    }
+    if (isClicked) {
+      console.log("click");
+    }
+    console.log(isClicked);
+    console.log(this.beers);
+    /* 
+     TODO WORK ON THIS LINE OVER 
+     */
     this.setState({
       favorited: FAVORITED_BEERS
     });
